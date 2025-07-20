@@ -1,0 +1,365 @@
+============= 02-04-2025 =========== in live DB
+
+ALTER TABLE `timesheetspro`.`user_inout` 
+DROP FOREIGN KEY `user_inout_ibfk_1`;
+ALTER TABLE `timesheetspro`.`user_inout` 
+CHARACTER SET = utf32 ;
+ALTER TABLE `timesheetspro`.`user_inout` 
+ADD CONSTRAINT `user_inout_ibfk_1`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `timesheetspro`.`users` (`user_id`)
+  ON DELETE CASCADE;
+
+
+============= 03-04-2025 =========== 
+remain to add query of location tables
+
+
+ALTER TABLE `departments` ADD FOREIGN KEY (`location_id`) REFERENCES `locations`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+============= 04-04-2025 =========== 
+
+CREATE TABLE `timesheetpro-local`.`company_details` (`id` INT NOT NULL AUTO_INCREMENT , `company_no` VARCHAR(200) NOT NULL , `company_name` VARCHAR(250) NOT NULL , `company_alias` VARCHAR(200) NOT NULL , `email` VARCHAR(200) NOT NULL , `phone` VARCHAR(20) NOT NULL , `industry_name` VARCHAR(250) NOT NULL , `website_url` VARCHAR(250) NOT NULL , `company_logo` VARCHAR(250) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+============= 05-04-2025 =========== 
+ALTER TABLE `users` ADD `employee_id` INT NOT NULL AFTER `profile_img`;
+
+
+============= 07-04-2025 =========== 
+CREATE TABLE `timesheetpro-local`.`company_employees` (`id` INT NOT NULL AUTO_INCREMENT , `company_id` INT NOT NULL , `user_name` VARCHAR(255) NOT NULL , `first_name` VARCHAR(255) NOT NULL , `last_name` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL , `password` VARCHAR(250) NOT NULL , `phone` VARCHAR(20) NOT NULL , `role_id` INT NOT NULL , `profile_image` VARCHAR NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `company_employees` CHANGE `profile_image` `profile_image` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+
+CREATE TABLE `timesheetpro-local`.`company_employee_roles` (`id` INT NOT NULL AUTO_INCREMENT , `company_id` INT NOT NULL , `role_name` VARCHAR(250) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `company_employee_roles` ADD FOREIGN KEY (`company_id`) REFERENCES `company_details`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+ALTER TABLE `company_employees` CHANGE `role_id` `role_id` INT(11) NULL;
+
+ALTER TABLE `company_employees` ADD FOREIGN KEY (`role_id`) REFERENCES `company_employee_roles`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+ALTER TABLE `users` ADD `user_name` VARCHAR(255) NOT NULL AFTER `employee_id`;
+
+
+
+============= 08-04-2025 =========== 
+
+ALTER TABLE `company_employees` CHANGE `profile_image` `profile_image` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+ALTER TABLE `company_employees` ADD `city` VARCHAR(200) NOT NULL AFTER `profile_image`, ADD `state` VARCHAR(200) NOT NULL AFTER `city`, ADD `country` VARCHAR(200) NOT NULL AFTER `state`, ADD `hourly_rate` INT NOT NULL AFTER `country`;
+
+ALTER TABLE `company_employees` CHANGE `hourly_rate` `hourly_rate` FLOAT NOT NULL;
+
+
+ALTER TABLE `company_employees` ADD `address` VARCHAR(500) NOT NULL AFTER `hourly_rate`;
+
+
+ALTER TABLE `company_employees` CHANGE `address` `address` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `company_employees` CHANGE `city` `city` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `company_employees` CHANGE `state` `state` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `company_employees` CHANGE `country` `country` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `company_employees` CHANGE `hourly_rate` `hourly_rate` FLOAT NULL;
+
+
+ALTER TABLE `company_details` ADD `isActive` INT NOT NULL AFTER `company_logo`;
+
+ALTER TABLE `company_details` CHANGE `isActive` `is_active` INT(11) NULL DEFAULT NULL;
+
+
+
+
+============= 09-04-2025 =========== 
+
+ALTER TABLE `company_employees` CHANGE `address` `address1` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `company_employees` ADD `address2` VARCHAR(250) NOT NULL AFTER `address1`;
+
+ALTER TABLE `company_employees` CHANGE `address2` `address2` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+ALTER TABLE `locations` CHANGE `address` `address1` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `locations` ADD `address2` VARCHAR(250) NULL AFTER `address1`;
+
+
+ALTER TABLE `company_details` CHANGE `is_active` `is_active` INT(11) NULL DEFAULT '1';
+
+
+============= 10-04-2025 =========== 
+
+
+CREATE TABLE `timesheetpro-local`.`company_functionality` (`id` INT NOT NULL AUTO_INCREMENT , `functionality_name` VARCHAR(200) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+CREATE TABLE `timesheetpro-local`.`company_modules` (`id` INT NOT NULL AUTO_INCREMENT , `module_name` VARCHAR(200) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `company_modules` ADD `functionality_id` INT NULL AFTER `module_name`;
+
+ALTER TABLE `company_modules` ADD FOREIGN KEY (`functionality_id`) REFERENCES `company_functionality`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+CREATE TABLE `timesheetpro-local`.`company_module_actions` (`id` INT NOT NULL AUTO_INCREMENT , `module_id` INT NOT NULL , `action_id` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+CREATE TABLE `timesheetpro-local`.`company_actions` (`id` INT NOT NULL AUTO_INCREMENT , `action_name` VARCHAR(200) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `company_module_actions` ADD FOREIGN KEY (`action_id`) REFERENCES `company_actions`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+CREATE TABLE `timesheetpro-local`.`company_role_module_actions` (`id` INT NOT NULL AUTO_INCREMENT , `role_Id` INT NULL , `module_action_Id` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `company_role_module_actions` ADD FOREIGN KEY (`role_Id`) REFERENCES `company_employee_roles`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT; ALTER TABLE `company_role_module_actions` ADD FOREIGN KEY (`module_action_Id`) REFERENCES `company_module_actions`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+
+ALTER TABLE `company_module_actions` ADD FOREIGN KEY (`module_id`) REFERENCES `company_modules`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+============= 11-04-2025 =========== 
+
+
+ALTER TABLE `company_employees` CHANGE `company_id` `company_id` INT(11) NULL;
+
+ALTER TABLE `company_employees` ADD FOREIGN KEY (`company_id`) REFERENCES `company_details`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+============= 14-04-2025 =========== 
+
+ALTER TABLE `company_employees` ADD `gender` VARCHAR NULL AFTER `address2`;
+
+============= 15-04-2025 =========== 
+
+ALTER TABLE `user_inout` CHANGE `user_id` `user_id` INT(20) NULL DEFAULT NULL;
+
+ALTER TABLE `user_inout` ADD FOREIGN KEY (`user_id`) REFERENCES `company_employees`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+CREATE TABLE `timesheetpro-local`.`user_permission` (`id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NULL , `module_action_Id` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `company_details` ADD `register_date` DATE NULL AFTER `is_active`;
+
+ALTER TABLE `company_details` CHANGE `register_date` `register_date` DATETIME NULL DEFAULT NULL;
+
+ALTER TABLE `company_details` CHANGE `register_date` `register_date` DATE NULL DEFAULT NULL;
+
+
+ALTER TABLE `company_details` CHANGE `company_alias` `DBA` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+
+
+ALTER TABLE `company_details` CHANGE `register_date` `register_date` DATETIME NULL DEFAULT NULL;
+
+
+============= 16-04-2025 =========== 
+
+ALTER TABLE `company_details` CHANGE `DBA` `DBA` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `company_employees` ADD `zip_code` VARCHAR(10) NULL AFTER `gender`;
+
+============= 18-04-2025 =========== 
+
+ALTER TABLE `company_details` ADD `organization_type` VARCHAR(250) NULL AFTER `register_date`;
+
+
+ALTER TABLE `company_details` ADD `EIN` VARCHAR(20) NULL AFTER `organization_type`;
+
+
+============= 19-04-2025 =========== 
+
+CREATE TABLE `timesheetpro-local`.`employee_tax_info` (`id` INT NOT NULL AUTO_INCREMENT , `withholding_status` VARCHAR(255) NULL , `multiple_jobs` VARCHAR(10) NULL , `claim_dependents` VARCHAR(255) NULL , `other_income` VARCHAR(255) NULL , `deductions` VARCHAR(255) NULL , `extra_withholding` VARCHAR(250) NULL , `exempt_withholding` VARCHAR(250) NULL , `state` VARCHAR(250) NULL , `oregon_withholding_status` VARCHAR(250) NULL , `number_of_allowances` VARCHAR(250) NULL , `additional_withholding` VARCHAR(250) NULL , `is_federal_tax` VARCHAR(10) NULL , `amount` VARCHAR(200) NULL , `oregon_exempt_from_withholding` VARCHAR(250) NULL , `employee_work_where_live` VARCHAR(10) NULL , `exempt_from_state_taxes` VARCHAR(10) NULL , `local_tax` VARCHAR(255) NULL , `employee_id` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `employee_tax_info` ADD FOREIGN KEY (`employee_id`) REFERENCES `company_employees`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+CREATE TABLE `timesheetpro-local`.`employee_backaccount_info` (`id` INT NOT NULL AUTO_INCREMENT , `account_type` VARCHAR(100) NOT NULL , `routing_number` VARCHAR(50) NOT NULL , `bank_name` VARCHAR(255) NOT NULL , `account_number` VARCHAR(20) NOT NULL , `deposit_distribution` VARCHAR(250) NOT NULL , `amount` VARCHAR(100) NOT NULL , `account_nickname` VARCHAR(250) NOT NULL , `employee_id` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `employee_backaccount_info` ADD FOREIGN KEY (`employee_id`) REFERENCES `company_employees`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+CREATE TABLE `timesheetpro-local`.`employment_info` (`id` INT NOT NULL AUTO_INCREMENT , `work_phone` VARCHAR(10) NOT NULL , `work_email` INT NOT NULL , `hire_date` DATETIME NOT NULL , `status` VARCHAR(100) NOT NULL , `paid_pension` VARCHAR(10) NOT NULL , `statutory_employee` VARCHAR(10) NOT NULL , `exclusion_indicator` VARCHAR(250) NOT NULL ,
+
+
+ALTER TABLE `employment_info` ADD FOREIGN KEY (`employee_id`) REFERENCES `company_employees`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+CREATE TABLE `timesheetpro-local`.`employee_payroll_info` (`id` INT NOT NULL AUTO_INCREMENT , `pay_type` VARCHAR(200) NOT NULL , `basis_pay` VARCHAR(200) NOT NULL , `pay_schedule` VARCHAR(200) NOT NULL , `standard_hours_per_pay_period` VARCHAR(200) NOT NULL , `employment_type` VARCHAR(200) NOT NULL , `seasonal_employee` VARCHAR(10) NOT NULL , `pay_rate` VARCHAR(200) NOT NULL , `employee_id` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `employee_payroll_info` ADD FOREIGN KEY (`employee_id`) REFERENCES `company_employees`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+CREATE TABLE `timesheetpro-local`.`employee_earnings` (`id` INT NOT NULL AUTO_INCREMENT , `earning_1` VARCHAR(255) NOT NULL , `retirement_deductions` VARCHAR(250) NOT NULL , `deduction_1` VARCHAR(255) NOT NULL , `type` VARCHAR(255) NOT NULL , `amount` VARCHAR(100) NOT NULL , `deduction_payment_method` VARCHAR(250) NOT NULL , `employee_id` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `employee_earnings` ADD FOREIGN KEY (`employee_id`) REFERENCES `company_employees`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+ALTER TABLE `employment_info` CHANGE `work_email` `work_email` VARCHAR(11) NOT NULL;
+
+ALTER TABLE `employment_info` CHANGE `work_email` `work_email` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+
+
+
+============= 21-04-2025 ===========
+
+ALTER TABLE `company_employees` ADD `dob` DATE NULL AFTER `zip_code`;
+
+ALTER TABLE `employment_info` ADD `ext` VARCHAR NULL AFTER `work_phone`;
+
+ALTER TABLE `employee_backaccount_info` CHANGE `account_type` `account_type` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_backaccount_info` CHANGE `routing_number` `routing_number` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+ALTER TABLE `employee_backaccount_info` CHANGE `bank_name` `bank_name` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_backaccount_info` CHANGE `account_number` `account_number` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+ALTER TABLE `employee_backaccount_info` CHANGE `deposit_distribution` `deposit_distribution` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_backaccount_info` CHANGE `amount` `amount` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_backaccount_info` CHANGE `account_nickname` `account_nickname` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+ALTER TABLE `employment_info` CHANGE `work_email` `work_email` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employment_info` CHANGE `work_phone` `work_phone` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employment_info` CHANGE `hire_date` `hire_date` DATETIME NULL;
+
+ALTER TABLE `employment_info` CHANGE `status` `status` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employment_info` CHANGE `paid_pension` `paid_pension` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employment_info` CHANGE `statutory_employee` `statutory_employee` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employment_info` CHANGE `exclusion_indicator` `exclusion_indicator` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employment_info` CHANGE `union_indicator` `union_indicator` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employment_info` CHANGE `eligibility_indicator` `eligibility_indicator` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employment_info` CHANGE `key_employee_indicator` `key_employee_indicator` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+ALTER TABLE `employee_earnings` CHANGE `earning_1` `earning_1` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_earnings` CHANGE `deduction_1` `deduction_1` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_earnings` CHANGE `type` `type` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_earnings` CHANGE `amount` `amount` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_earnings` CHANGE `deduction_payment_method` `deduction_payment_method` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_payroll_info` CHANGE `pay_type` `pay_type` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_earnings` CHANGE `retirement_deductions` `retirement_deductions` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+ALTER TABLE `employee_payroll_info` CHANGE `basis_pay` `basis_pay` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_payroll_info` CHANGE `pay_schedule` `pay_schedule` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_payroll_info` CHANGE `standard_hours_per_pay_period` `standard_hours_per_pay_period` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_payroll_info` CHANGE `employment_type` `employment_type` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_payroll_info` CHANGE `seasonal_employee` `seasonal_employee` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `employee_payroll_info` CHANGE `pay_rate` `pay_rate` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+ALTER TABLE `employment_info` ADD `hce` VARCHAR(200) NULL AFTER `key_employee_indicator`;
+
+
+ALTER TABLE `employee_earnings` ADD `haveGoalMethod` VARCHAR(10) NULL AFTER `employee_id`;
+
+ALTER TABLE `employee_earnings` CHANGE `haveGoalMethod` `haveGoalAmount` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+ALTER TABLE `employee_earnings` CHANGE `haveGoalAmount` `have_goal_amount` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+============= 22-04-2025 ===========
+
+ALTER TABLE `company_employees` ADD `pay_period` VARCHAR(200) NULL AFTER `dob`, ADD `pay_class` VARCHAR(200) NULL AFTER `pay_period`, ADD `hired_date` DATE NULL AFTER `pay_class`, ADD `is_active` INT NULL AFTER `hired_date`, ADD `middle_name` VARCHAR(200) NULL AFTER `is_active`, ADD `department_id` INT NULL AFTER `middle_name`, ADD `employee_type` INT NULL AFTER `department_id`;
+
+
+ALTER TABLE `company_employees` ADD `contractor_id` INT NULL AFTER `employee_type`;
+
+ALTER TABLE `company_employees` CHANGE `department_id` `department_id` BIGINT(20) NULL DEFAULT NULL;
+
+ALTER TABLE `company_employees` CHANGE `contractor_id` `contractor_id` BIGINT(20) NULL DEFAULT NULL;
+
+
+ALTER TABLE `company_employees` ADD FOREIGN KEY (`department_id`) REFERENCES `departments`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT; ALTER TABLE `company_employees` ADD FOREIGN KEY (`contractor_id`) REFERENCES `contractor`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+ALTER TABLE `company_employees` ADD `emergencyContact` VARCHAR(200) NULL AFTER `contractor_id`, ADD `contactPhone` VARCHAR(10) NULL AFTER `emergencyContact`, ADD `relationship` VARCHAR(200) NULL AFTER `contactPhone`;
+
+ALTER TABLE `company_employees` CHANGE `contactPhone` `contact_phone` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `company_employees` CHANGE `emergencyContact` `emergency_contact` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+CREATE TABLE `timesheetpro-local`.`employee_type` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(200) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `company_employees` ADD FOREIGN KEY (`employee_type`) REFERENCES `employee_type`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+
+============= 23-04-2025 ===========
+
+CREATE TABLE `timesheetpro-local`.`company_theme` (`id` INT NOT NULL AUTO_INCREMENT , `company_id` INT NULL , `primary_color` VARCHAR(200) NOT NULL , `primary_bg_color` VARCHAR(200) NOT NULL , `textbox_variant` VARCHAR(255) NOT NULL , `button_variant` VARCHAR(255) NOT NULL , `secondary_color` INT NOT NULL , `secondary_bg_color` INT NOT NULL , `title_style` VARCHAR(500) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `company_theme` ADD FOREIGN KEY (`company_id`) REFERENCES `company_details`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+ALTER TABLE `company_theme` CHANGE `primary_color` `primary_color` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `company_theme` CHANGE `primary_bg_color` `primary_bg_color` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `company_theme` CHANGE `textbox_variant` `textbox_variant` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+ALTER TABLE `company_theme` CHANGE `button_variant` `button_variant` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `company_theme` CHANGE `secondary_color` `secondary_color` VARCHAR(200) NULL;
+
+ALTER TABLE `company_theme` CHANGE `secondary_bg_color` `secondary_bg_color` VARCHAR(250) NULL;
+
+ALTER TABLE `company_theme` CHANGE `title_style` `title_style` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+============= 24-04-2025 ===========
+
+ALTER TABLE `company_theme` CHANGE `primary_color` `side_navigation_bg_color` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+ALTER TABLE `company_theme` CHANGE `primary_bg_color` `content_bg_color` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+ALTER TABLE `company_theme` CHANGE `textbox_variant` `content_bg_color2` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+ALTER TABLE `company_theme` CHANGE `button_variant` `header_bg_color` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+ALTER TABLE `company_theme` CHANGE `secondary_bg_color` `text_color` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+ALTER TABLE `company_theme` CHANGE `title_style` `primary_color` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+============= 25-04-2025 ===========
+
+ALTER TABLE `company_theme` ADD `icon_color` VARCHAR(200) NULL AFTER `primary_color`;
+

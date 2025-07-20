@@ -1,0 +1,47 @@
+npm i @react-native-async-storage/async-storage @react-native-community/datetimepicker @react-native-menu/menu @react-navigation/drawer @react-navigation/native @react-navigation/stack @reduxjs/toolkit axios expo-image-picker expo-splash-screen nativewind react-hook-form react-native-check-box react-native-dotenv react-native-reanimated react-native-safe-area-context react-native-select-dropdown react-native-toast-notifications react-native-vector-icons react-redux redux tailwindcss 
+
+npx create-expo-app TimeSheetsPro --template
+eas build:configure
+eas build -p android --profile preview
+eas build -p ios --profile preview
+eas build --profile development --platform android
+
+
+npx react-native  Awesome Project --template react-native-template-legacy
+C:\Users\Lenovo\AppData\Local\jdk-11.0.2
+
+gradlew clean
+gradlew.bat clean
+gradlew assembleRelease
+
+npx react-native build-android --mode=release
+npx react-native log-android
+npx react-native run-android
+npx react-native start --reset-cache
+
+
+npm install @capacitor/core @capacitor/cli
+npm i @capacitor/android @capacitor/ios
+npm run build
+npx cap copy
+npx cap add android
+npx cap add ios
+npx cap sync
+npx cap open android
+chrome://inspect
+
+
+
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/Jay-kaiasoft/TSP_frontend.git
+git push -u origin main
+
+=========== or push an existing repository from the command line ==========
+
+git remote add origin https://github.com/Jay-kaiasoft/TSP_frontend.git
+git branch -M main
+git push -u origin main
+git pull origin <branch-name>

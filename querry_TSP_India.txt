@@ -1,0 +1,22 @@
+==================== 16-07-2025 ===============
+
+ALTER TABLE `company_employees` ADD `blood_group` VARCHAR(10) NULL AFTER `embedding`, ADD `aadhar_image` VARCHAR(255) NULL AFTER `blood_group`;
+
+ALTER TABLE `company_employees` ADD `is_pf` BOOLEAN NULL AFTER `aadhar_image`, ADD `pf_percentage` INT NULL AFTER `is_pf`, ADD `is_pt` BOOLEAN NULL AFTER `pf_percentage`, ADD `pt_amount` INT NULL AFTER `is_pt`;
+
+==================== 17-07-2025 ===============
+
+ALTER TABLE `company_employees` ADD `pf_amount` INT NULL AFTER `pf_percentage`;
+ALTER TABLE `company_employees` ADD `basic_salary` INT NOT NULL AFTER `pt_amount`;
+
+==================== 18-07-2025 ===============
+
+ALTER TABLE `employee_backaccount_info` ADD `passbook_image` VARCHAR(250) NULL AFTER `employee_id`;
+
+ALTER TABLE `employee_backaccount_info` ADD `ifsc_code` VARCHAR(20) NULL AFTER `account_type`;
+
+ALTER TABLE `employee_backaccount_info` ADD `address` VARCHAR(255) NULL AFTER `passbook_image`;
+
+ALTER TABLE `employee_backaccount_info` ADD `branch` VARCHAR(100) NULL AFTER `bank_name`;
+
+ALTER TABLE `company_employees` ADD `gross_salary` INT NULL AFTER `basic_salary`;

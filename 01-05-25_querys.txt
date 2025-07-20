@@ -1,0 +1,77 @@
+============= 01-05-2025 ===========
+
+CREATE TABLE `timesheetpro-local`.`company_shift` (`id` INT NOT NULL AUTO_INCREMENT , `shift_name` VARCHAR(255) NOT NULL , `shift_type` VARCHAR(250) NOT NULL , `time_start` TIME NULL , `time_end` TIME NULL , `hours` INT NULL , `total_hours` INT NULL , `company_id` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `company_shift` ADD FOREIGN KEY (`company_id`) REFERENCES `company_details`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+ALTER TABLE `company_shift` CHANGE `time_start` `time_start` TIMESTAMP NULL DEFAULT NULL;
+
+ALTER TABLE `company_shift` CHANGE `time_end` `time_end` TIMESTAMP NULL DEFAULT NULL;
+
+
+============= 02-05-2025 ===========
+
+ALTER TABLE `company_employees` ADD `shift_id` INT NULL AFTER `middle_name`;
+
+ALTER TABLE `company_employees` ADD FOREIGN KEY (`shift_id`) REFERENCES `company_shift`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+ALTER TABLE `company_employees` DROP FOREIGN KEY `company_employees_ibfk_5`; ALTER TABLE `company_employees` ADD CONSTRAINT `company_employees_ibfk_5` FOREIGN KEY (`shift_id`) REFERENCES `company_shift`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+
+ALTER TABLE `company_shift` CHANGE `hours` `hours` FLOAT(11) NULL DEFAULT NULL;
+
+ALTER TABLE `company_shift` CHANGE `total_hours` `total_hours` FLOAT(11) NULL DEFAULT NULL;
+
+============= 10-05-2025 ===========
+
+ALTER TABLE `company_employees` ADD `is_contractor` INT NOT NULL DEFAULT '0' AFTER `relationship`;
+
+ALTER TABLE `employee_payroll_info` CHANGE `pay_rate` `pay_rate` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `company_employees` ADD `ext` VARCHAR(200) NULL AFTER `is_contractor`;
+
+ALTER TABLE `company_employees` ADD `work_state` VARCHAR(200) NULL AFTER `ext`, ADD `work_location` VARCHAR(255) NULL AFTER `work_state`;
+
+ALTER TABLE `employee_tax_info` CHANGE `oregon_withholding_status` `state_tax_withholding_status` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `employee_tax_info` CHANGE `oregon_exempt_from_withholding` `state_tax_exempt_from_withholding` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `employee_tax_info` ADD `w_4_type` VARCHAR(100) NULL AFTER `employee_id`;
+
+
+============= 12-05-2025 ===========
+
+ALTER TABLE `employee_tax_info` ADD `nonresident_military_spouse` VARCHAR(200) NULL AFTER `w_4_type`, ADD `signature` VARCHAR(250) NULL AFTER `nonresident_military_spouse`;
+
+ALTER TABLE `employee_tax_info` ADD `date` DATE NULL AFTER `signature`;
+
+ALTER TABLE `employee_tax_info` ADD `work_country` VARCHAR NULL AFTER `date`;
+
+
+============= 18-05-2025 ===========
+
+ALTER TABLE `locations` ADD `radar_externalId` VARCHAR(200) NULL AFTER `company_id`;
+
+ALTER TABLE `locations` CHANGE `radar_externalId` `radar_external_id` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+============= 21-05-2025 ===========
+
+ALTER TABLE `locations` ADD `zip_code` VARCHAR(20) NULL AFTER `address2`;
+
+ALTER TABLE `locations` ADD `location_name` VARCHAR(200) NOT NULL AFTER `id`;
+
+ALTER TABLE `locations` ADD `geofence_Id` VARCHAR(200) NULL AFTER `radar_external_id`;
+
+
+============= 04-06-2025 ===========
+
+ALTER TABLE `company_employees` ADD `company_location` VARCHAR(200) NULL AFTER `work_location`;
+
+ALTER TABLE `locations` ADD `is_active` INT NOT NULL DEFAULT '1' AFTER `geofence_Id`;
+
+============= 06-06-2025 ===========
+
+ALTER TABLE `company_employees` ADD `check_geofence` INT NOT NULL DEFAULT '1' AFTER `company_location`;

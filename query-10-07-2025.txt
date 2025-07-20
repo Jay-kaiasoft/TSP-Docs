@@ -1,0 +1,18 @@
+----------------------------- 10-07-2025 ---------------------
+
+ALTER TABLE `locations` ADD `pay_period` VARCHAR(15) NULL AFTER `is_active`, ADD `pay_period_start` DATE NULL AFTER `pay_period`, ADD `pay_period_end` DATE NULL AFTER `pay_period_start`;
+ALTER TABLE `locations` CHANGE `pay_period` `pay_period` INT NULL DEFAULT NULL;
+
+ALTER TABLE `user_inout` ADD `location_id` INT NULL AFTER `user_id`;
+
+ALTER TABLE `user_inout` ADD FOREIGN KEY (`location_id`) REFERENCES `locations`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+----------------------------- 11-07-2025 ---------------------
+
+ALTER TABLE `departments` ADD `company_id` INT NULL AFTER `department_name`;
+ALTER TABLE `departments` ADD FOREIGN KEY (`company_id`) REFERENCES `company_details`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+----------------------------- 12-07-2025 ---------------------
+
+ALTER TABLE `company_employees` ADD `embedding` JSON NULL AFTER `check_geofence`;
+ALTER TABLE company_employees MODIFY COLUMN embedding JSON NULL;
