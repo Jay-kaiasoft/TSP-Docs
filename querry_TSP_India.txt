@@ -30,3 +30,13 @@ ALTER TABLE `company_employees` CHANGE `amount_cut_from_salary` `canteen_amount`
 CREATE TABLE `timesheetpro-local_india`.`overtime_rules` (`id` INT NOT NULL AUTO_INCREMENT , `rule_name` VARCHAR(255) NOT NULL , `ot_minutes` INT NOT NULL , `ot_amount` FLOAT NOT NULL , `ot_type` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 ALTER TABLE `overtime_rules` ADD `user_ids` VARCHAR(255) NOT NULL AFTER `ot_type`;
+
+==================== 22-07-2025 ===============
+
+ALTER TABLE `overtime_rules` ADD `start_time` TIMESTAMP NULL AFTER `rule_name`, ADD `end_time` TIMESTAMP NULL AFTER `start_time`;
+
+ALTER TABLE `overtime_rules` CHANGE `user_ids` `user_ids` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+==================== 23-07-2025 ===============
+
+ALTER TABLE `company_shift` CHANGE `total_hours` `total_hours` INT NULL DEFAULT NULL;
