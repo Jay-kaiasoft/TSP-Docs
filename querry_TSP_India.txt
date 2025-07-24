@@ -40,3 +40,7 @@ ALTER TABLE `overtime_rules` CHANGE `user_ids` `user_ids` VARCHAR(255) CHARACTER
 ==================== 23-07-2025 ===============
 
 ALTER TABLE `company_shift` CHANGE `total_hours` `total_hours` INT NULL DEFAULT NULL;
+
+==================== 24-07-2025 ===============
+
+ALTER TABLE `overtime_rules` CHANGE `ot_amount` `ot_amount` FLOAT NULL;
