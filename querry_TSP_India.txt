@@ -44,3 +44,24 @@ ALTER TABLE `company_shift` CHANGE `total_hours` `total_hours` INT NULL DEFAULT 
 ==================== 24-07-2025 ===============
 
 ALTER TABLE `overtime_rules` CHANGE `ot_amount` `ot_amount` FLOAT NULL;
+
+==================== 28-07-2025 ===============
+
+ALTER TABLE `company_employees` ADD `emergency_phone` INT NULL AFTER `phone`, ADD `alt_phone` INT NULL AFTER `emergency_phone`;
+
+ALTER TABLE `company_employees` CHANGE `alt_phone` `alt_phone` VARCHAR(11) NULL DEFAULT NULL;
+
+ALTER TABLE `company_employees` CHANGE `emergency_phone` `emergency_phone` VARCHAR(11) NULL DEFAULT NULL;
+
+ALTER TABLE `company_employees` ADD `pf_type` VARCHAR NOT NULL AFTER `is_pf`;
+
+==================== 29-07-2025 ===============
+
+CREATE TABLE `timesheetpro-local_india`.`salary_statement_history` (`id` INT NOT NULL AUTO_INCREMENT , `employee_id` INT NOT NULL , `employee_name` VARCHAR(200) NOT NULL , `department_name` VARCHAR(200) NOT NULL , `basic_salary` INT NOT NULL , `ot` INT NOT NULL , `ot_amount` INT NOT NULL , `pf_amount` INT NULL , `total_pf_amount` INT NOT NULL , `pf_percentage` INT NULL , `total_earnings` INT NOT NULL , `total_eductions` INT NOT NULL , `other_deductions` INT NOT NULL , `net_salary` INT NOT NULL , `month` VARCHAR(100) NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `salary_statement_history` ADD `company_id` INT NOT NULL AFTER `id`;
+
+ALTER TABLE `salary_statement_history` ADD `department_id` INT NOT NULL AFTER `employee_name`;
+
+ALTER TABLE `salary_statement_history` ADD `pt_amount` INT NULL AFTER `pf_percentage`;
