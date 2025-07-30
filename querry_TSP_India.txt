@@ -65,3 +65,11 @@ ALTER TABLE `salary_statement_history` ADD `company_id` INT NOT NULL AFTER `id`;
 ALTER TABLE `salary_statement_history` ADD `department_id` INT NOT NULL AFTER `employee_name`;
 
 ALTER TABLE `salary_statement_history` ADD `pt_amount` INT NULL AFTER `pf_percentage`;
+
+==================== 30-07-2025 ===============
+
+ALTER TABLE `salary_statement_history` ADD `total_days` INT NOT NULL AFTER `month`, ADD `working_days` INT NOT NULL AFTER `total_days`;
+
+ALTER TABLE `salary_statement_history` ADD `total_earn_salary` INT NOT NULL AFTER `basic_salary`;
+
+ALTER TABLE `company_employees` CHANGE `pf_type` `pf_type` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
