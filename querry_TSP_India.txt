@@ -79,3 +79,17 @@ ALTER TABLE `company_employees` CHANGE `pf_type` `pf_type` VARCHAR(20) CHARACTER
 ALTER TABLE `company_employees` ADD `ot_id` INT NULL AFTER `canteen_amount`;
 
 ALTER TABLE `company_employees` ADD FOREIGN KEY (`ot_id`) REFERENCES `overtime_rules`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+==================== 04-08-2025 ===============
+
+ALTER TABLE `user_inout` ADD `company_id` INT NULL AFTER `location_id`;
+
+ALTER TABLE `user_inout` ADD FOREIGN KEY (`company_id`) REFERENCES `company_details`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+
+==================== 05-08-2025 ===============
+
+ALTER TABLE `company_employees` ADD `lunch_breck` INT NULL AFTER `canteen_amount`;
+
+ALTER TABLE `company_employees` CHANGE `lunch_breck` `lunch_break` INT(11) NULL DEFAULT NULL;
+
