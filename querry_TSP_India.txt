@@ -182,3 +182,23 @@ ALTER TABLE `weekly_off` ADD FOREIGN KEY (`created_by`) REFERENCES `company_empl
 ALTER TABLE `weekly_off` ADD `company_id` INT NULL AFTER `created_by`;
 
 ALTER TABLE `weekly_off` ADD FOREIGN KEY (`company_id`) REFERENCES `company_details`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+==================== 12-08-2025 ===============
+
+ALTER TABLE `company_employees` ADD `weekly_off` INT NULL AFTER `ot_id`;
+
+ALTER TABLE `company_employees` ADD FOREIGN KEY (`weekly_off`) REFERENCES `weekly_off`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+==================== 13-08-2025 ===============
+
+ALTER TABLE `weekly_off` ADD `is_default` INT NOT NULL DEFAULT '0' AFTER `description`;
+
+ALTER TABLE `salary_statement_history` ADD `generated_by` INT NULL AFTER `note`, ADD `generated_date` DATE NULL DEFAULT CURRENT_TIMESTAMP AFTER `generated_by`;
+
+ALTER TABLE `salary_statement_history` ADD FOREIGN KEY (`generated_by`) REFERENCES `company_employees`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+ALTER TABLE `salary_statement_history` CHANGE `month` `salary_month` INT NULL DEFAULT NULL;
+
+ALTER TABLE `salary_statement_history` ADD `salary_year` INT NULL AFTER `salary_month`;
+
+ALTER TABLE `salary_statement_history` ADD `salary_month_and_year` VARCHAR(20) NULL AFTER `net_salary`;

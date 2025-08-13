@@ -45,3 +45,5 @@ git remote add origin https://github.com/Jay-kaiasoft/TSP_frontend.git
 git branch -M main
 git push -u origin main
 git pull origin <branch-name>
+
+git reset --soft HEAD~1 // remove current commit
