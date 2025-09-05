@@ -202,3 +202,60 @@ ALTER TABLE `salary_statement_history` CHANGE `month` `salary_month` INT NULL DE
 ALTER TABLE `salary_statement_history` ADD `salary_year` INT NULL AFTER `salary_month`;
 
 ALTER TABLE `salary_statement_history` ADD `salary_month_and_year` VARCHAR(20) NULL AFTER `net_salary`;
+
+==================== 14-08-2025 ===============
+
+ALTER TABLE `salary_statement_history` CHANGE `total_days` `total_paid_days` INT(11) NOT NULL;
+
+ALTER TABLE `salary_statement_history` ADD `total_days` INT NULL AFTER `working_days`;
+
+==================== 18-08-2025 ===============
+
+CREATE TABLE `timesheetpro-local_india`.`attendance_penalty_rules` (`id` INT NOT NULL AUTO_INCREMENT , `company_id` INT NULL , `created_by` INT NULL , `rule_name` VARCHAR(200) NOT NULL , `minutes` INT NOT NULL , `deducation_type` VARCHAR(200) NOT NULL , `amount` INT NULL , `count` INT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `attendance_penalty_rules` ADD FOREIGN KEY (`company_id`) REFERENCES `company_details`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+ALTER TABLE `attendance_penalty_rules` ADD FOREIGN KEY (`created_by`) REFERENCES `company_employees`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+ALTER TABLE `attendance_penalty_rules` CHANGE `deducation_type` `deduction_type` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+
+==================== 19-08-2025 ===============
+
+ALTER TABLE `attendance_penalty_rules` ADD `start_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `rule_name`, ADD `end_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `start_time`;
+
+ALTER TABLE `company_employees` ADD `penalty_rule` BOOLEAN NOT NULL DEFAULT TRUE AFTER `weekly_off`;
+
+ALTER TABLE `salary_statement_history` ADD `total_penalty_amount` INT NOT NULL DEFAULT '0' AFTER `total_deductions`;
+
+==================== 20-08-2025 ===============
+
+ALTER TABLE `company_employees` CHANGE `penalty_rule` `late_entry_penalty_rule` TINYINT(1) NOT NULL DEFAULT '1';
+
+ALTER TABLE `company_employees` ADD `early_exit_penalty_rule` BOOLEAN NOT NULL DEFAULT TRUE AFTER `late_entry_penalty_rule`;
+
+ALTER TABLE `attendance_penalty_rules` ADD `is_early_exit` BOOLEAN NULL DEFAULT NULL AFTER `count`;
+
+==================== 22-08-2025 ===============
+
+CREATE TABLE `timesheetpro-local_india`.`holiday_templates` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(200) NOT NULL , `company_id` INT NOT NULL , `created_by` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `holiday_templates` CHANGE `company_id` `company_id` INT(11) NULL;
+
+ALTER TABLE `holiday_templates` CHANGE `created_by` `created_by` INT(11) NULL;
+
+ALTER TABLE `holiday_templates` ADD FOREIGN KEY (`company_id`) REFERENCES `company_details`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT; 
+
+ALTER TABLE `holiday_templates` ADD FOREIGN KEY (`created_by`) REFERENCES `company_employees`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+CREATE TABLE `timesheetpro-local_india`.`holiday_template_details` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(200) NOT NULL , `date` DATE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `holiday_template_details` ADD `holiday_template_id` INT NOT NULL AFTER `date`;
+
+ALTER TABLE `holiday_template_details` ADD FOREIGN KEY (`holiday_template_id`) REFERENCES `holiday_templates`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+==================== 23-08-2025 ===============
+
+ALTER TABLE `company_employees` ADD `holiday_template` INT NULL AFTER `weekly_off`;
+
+ALTER TABLE `company_employees` ADD FOREIGN KEY (`holiday_template`) REFERENCES `holiday_templates`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;

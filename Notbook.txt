@@ -47,3 +47,9 @@ git push -u origin main
 git pull origin <branch-name>
 
 git reset --soft HEAD~1 // remove current commit
+
+git update-ref -d HEAD // for just one commit in repo
+
+
+sarju@salesandmarketing.ai
+Krishna@108!
