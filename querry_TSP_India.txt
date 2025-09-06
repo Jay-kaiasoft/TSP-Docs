@@ -259,3 +259,8 @@ ALTER TABLE `holiday_template_details` ADD FOREIGN KEY (`holiday_template_id`) R
 ALTER TABLE `company_employees` ADD `holiday_template` INT NULL AFTER `weekly_off`;
 
 ALTER TABLE `company_employees` ADD FOREIGN KEY (`holiday_template`) REFERENCES `holiday_templates`(`id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+
+==================== 06-09-2025 ===============
+ALTER TABLE `overtime_rules` DROP `start_time`, DROP `end_time`;
+
+ALTER TABLE `attendance_penalty_rules` DROP `start_time`, DROP `end_time`;

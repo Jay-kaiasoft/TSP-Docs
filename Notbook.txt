@@ -53,3 +53,21 @@ git update-ref -d HEAD // for just one commit in repo
 
 sarju@salesandmarketing.ai
 Krishna@108!
+
+------------ pulse -----------
+198.38.89.247:22
+root
+sihO2A011V8AbSlh
+
+----------- step --------
+copy .var file into tmp 
+cd /devapi_calcsalary/deployment/
+cp /tmp/v1.war .
+tail -1000f /opt/tomcat/logs/catalina.out -- for show logs
+
+copy build file into tmp 
+cd /tmp
+unzip build.zip
+cd /devwebapp_calcsalary/devwebapp.calcsalary.com/
+\cp -rf /tmp/build/. .
+
