@@ -264,3 +264,12 @@ ALTER TABLE `company_employees` ADD FOREIGN KEY (`holiday_template`) REFERENCES 
 ALTER TABLE `overtime_rules` DROP `start_time`, DROP `end_time`;
 
 ALTER TABLE `attendance_penalty_rules` DROP `start_time`, DROP `end_time`;
+
+==================== 23-09-2025 ===============
+
+ALTER TABLE `locations`  DROP `time_zone`;
+
+==================== 17-12-2025 ===============
+
+ALTER TABLE `company_employees` CHANGE `working_hours_include_lunch` `working_hours_include_lunch` FLOAT NULL DEFAULT NULL;
+

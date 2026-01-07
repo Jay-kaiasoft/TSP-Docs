@@ -29,6 +29,8 @@ npx cap add ios
 npx cap sync
 npx cap open android
 chrome://inspect
+cd android
+gradlew assembleDebug
 
 
 
@@ -51,6 +53,7 @@ git reset --soft HEAD~1 // remove current commit
 git update-ref -d HEAD // for just one commit in repo
 
 
+samaivpn.openvpn.com
 sarju@salesandmarketing.ai
 Krishna@108!
 
@@ -71,3 +74,11 @@ unzip build.zip
 cd /devwebapp_calcsalary/devwebapp.calcsalary.com/
 \cp -rf /tmp/build/. .
 
+
+
+root@719159-pulseemr:/devfacerec_devwebapp# tail -100f uvicorn.log   -- for python log
+
+lsof -i :8000
+source env/bin/activate
+uvicorn app:app --host 127.0.0.1 --port 8000 --workers 4 > uvicorn.log 2>&1 &
+systemctl restart apache2
