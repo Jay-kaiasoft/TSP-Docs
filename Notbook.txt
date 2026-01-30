@@ -77,6 +77,7 @@ cd /devwebapp_calcsalary/devwebapp.calcsalary.com/
 
 
 root@719159-pulseemr:/devfacerec_devwebapp# tail -100f uvicorn.log   -- for python log
+ uvicorn app:app --host 127.0.0.1 --port 8000 --workers 1 --timeout-keep-alive 180 > uvicorn.log 2>&1 &
 
 lsof -i :8000
 source env/bin/activate
