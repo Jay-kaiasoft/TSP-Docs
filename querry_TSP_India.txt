@@ -273,3 +273,16 @@ ALTER TABLE `locations`  DROP `time_zone`;
 
 ALTER TABLE `company_employees` CHANGE `working_hours_include_lunch` `working_hours_include_lunch` FLOAT NULL DEFAULT NULL;
 
+
+============================ 22-04-26 ============================
+
+CREATE TABLE `timesheetpro-local_india`.`deductions` (`id` INT NOT NULL AUTO_INCREMENT , `employee_id` INT NOT NULL , `type` VARCHAR(250) NOT NULL , `amount` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `deductions` ADD FOREIGN KEY (`employee_id`) REFERENCES `company_employees`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+ALTER TABLE `deductions` ADD `label` VARCHAR(250) NOT NULL AFTER `type`;
+
+============================ 23-04-26 ============================ ----------- also done into Prod DB till 23-04-26
+
+ALTER TABLE `salary_statement_history` CHANGE `basic_salary` `basic_salary` INT(11) NULL;
+

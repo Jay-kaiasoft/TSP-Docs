@@ -72,7 +72,7 @@ copy build file into tmp
 cd /tmp
 unzip build.zip
 cd /devwebapp_calcsalary/devwebapp.calcsalary.com/
-\cp -rf /tmp/build/. .
+\cp -rf /tmp/dist/. .
 
 
 
